@@ -39,6 +39,7 @@ tapd --network=mainnet \
 
 # Check wallet balance
 lncli --lnddir=/data3/.lnd --macaroonpath=/data3/.lnd/data/chain/bitcoin/testnet/admin.macaroon walletbalance
+```
 {
     "total_balance":  "0",
     "confirmed_balance":  "0",
@@ -52,7 +53,7 @@ lncli --lnddir=/data3/.lnd --macaroonpath=/data3/.lnd/data/chain/bitcoin/testnet
         }
     }
 }
-
+```
 # Mint assets
 
 ## Mainnet
