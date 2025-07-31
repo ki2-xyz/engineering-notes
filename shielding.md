@@ -27,7 +27,19 @@ This proves on-chain ownership via tapd. Then they compute:
 
 The commitment C is included in the SNARK circuit as a public input (sig_commitment) and pptionally published on-chain when transferring the note. Commitment ```C``` serves to prove that the shielded note was legitimately created. In addition, we can publish the commitment on chain when we transfer the shielded asset. 
 
-## Replay protection
-Bind challenge to a specific Bitcoin block hash or anchor txid, include it as:
+##  Circuit Design:
 
-A public input to the circuit, and Inside the message that was signed
+  The signature commitment is computed as:
+
+  ```sig_commitment = SHA256(sig_preimage || zeros_256)```
+
+  Where:
+  - sig_preimage is a 32-byte private input that would contain the signature
+  - zeros_256 is 32 bytes of zeros for padding
+
+  In production, sig_preimage would be:
+
+  ```signature_over(challenge || SHA256(proof))```
+
+  Bind challenge to a specific Bitcoin block hash or anchor txid, this allows the circuit to verify that the prover knows a valid signature over the proof commitment, preventing proof replay attacks.
+ 
