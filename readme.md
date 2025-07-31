@@ -5,7 +5,8 @@ The Taproot assets protocol needs Lightning networks daemon to be running for fu
 ## Start LND
 
 ### Testnet
-./lnd-debug --lnddir=/data3/.lnd --configfile=/data3/.lnd/lnd.conf --wallet-unlock-password-file=/data3/.lnd/pass.txt
+./lnd-debug --lnddir=/data3/.lnd --configfile=/data3/.lnd/lnd.conf --wallet-unlock-password-file=/data3/.lnd/pass.txt 
+--reset-wallet-transactions
 
 ### Mainnet
 ./lnd-debug --lnddir=/data3/.lnd --configfile=/data3/.lnd/lnd-mainnet.conf --wallet-unlock-password-file=/data3/.lnd/pass.txt
@@ -57,10 +58,10 @@ lncli --lnddir=/data3/.lnd --macaroonpath=/data3/.lnd/data/chain/bitcoin/testnet
 # Mint assets
 
 ## Mainnet
-tapcli --macaroonpath=$HOME/.tapd/data/mainnet/admin.macaroon --network=mainnet  assets mint --type normal --name fantasycoin --supply 100 --meta_bytes "fantastic money"
+tapcli --macaroonpath=$HOME/.tapd/data/mainnet/admin.macaroon --network=mainnet  assets mint --type normal --name testx --supply 1000 --meta_bytes "fantastic money"
 
 ## Testnet
- tapcli --macaroonpath=$HOME/.tapd/data/testnet/admin.macaroon --network=testnet  assets mint --type normal --name fantasycoin --supply 100 --meta_bytes "fantastic money"
+ tapcli --macaroonpath=$HOME/.tapd/data/testnet/admin.macaroon --network=testnet  assets mint --type normal --name testx --supply 1000 --meta_bytes "fantastic money"
 
 # Finalize 
 
@@ -69,3 +70,17 @@ tapcli --macaroonpath=$HOME/.tapd/data/mainnet/admin.macaroon assets mint finali
 
 ## Testnet
 tapcli --macaroonpath=$HOME/.tapd/data/testnet/admin.macaroon assets mint finalize
+
+
+## RBF
+$ lncli --tlscertpath /data3/.lnd/tls.cert --macaroonpath=/data3/.lnd/data/chain/bitcoin/testnet/admin.macaroon  wallet bumpfee --sat_per_vbyte 13 9cc51916ac8681b89423d0227de02c7d95b5a58ede9078e4cc152544e8cec501:0
+
+
+$ lncli --tlscertpath /data3/.lnd/tls.cert --macaroonpath=/data3/.lnd/data/chain/bitcoin/testnet/admin.macaroon  wallet bumpfee --sat_per_vbyte 13 9cc51916ac8681b89423d0227de02c7d95b5a58ede9078e4cc152544e8cec501:1
+{
+    "status":  "Successfully registered CPFP-tx with the sweeper"
+}
+
+
+## Show transfers
+tapcli --network=testnet --macaroonpath=$HOME/.tapd/data/testnet/admin.macaroon assets transfers --asset_id dbfd64ad88a62cf82c4e87248f532dd10ccacf16e8106a5aa4651787a0827419
